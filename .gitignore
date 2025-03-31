@@ -1,0 +1,7 @@
+# Arquivos temporários / de build
+/build/
+/output/
+/*.bin
+*.o
+keys/*.key
+keys/*.hmac
