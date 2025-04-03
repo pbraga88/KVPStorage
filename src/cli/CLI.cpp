@@ -1,22 +1,21 @@
 #include "cli/CLI.hpp"
-#include <iostream>
 #include <string>
 
-CLI::CLI(CommandProcessor& processor)
-    : processor_(processor) {}
+CLI::CLI(CommandProcessor& processor, std::istream& in, std::ostream& out)
+    : processor_(processor), in_(in), out_(out) {}
 
 void CLI::run() {
     std::string line;
-    std::cout << "> ";
-    while (std::getline(std::cin, line)) {
+    out_ << "> ";
+    while (std::getline(in_, line)) {
         if (line == "exit") break;
 
         std::string result = processor_.handle_command(line);
         if (!result.empty()) {
-            std::cout << result << "\n";
+            out_ << result << "\n";
         }
 
-        std::cout << "> ";
+        out_ << "> ";
     }
-    std::cout << "Bye!\n";
+    out_ << "Bye!\n";
 }

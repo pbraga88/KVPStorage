@@ -31,8 +31,18 @@ void FileKVStorage::del(const std::string& key) {
 }
 
 void FileKVStorage::load_storage() {
+    std::filesystem::create_directories(std::filesystem::path(file_path_).parent_path());
+    // std::ifstream file(file_path_, std::ios::binary);
+
+    if (!std::filesystem::exists(file_path_)) {
+        // Arquivo ainda não existe: primeira execução.
+        kv_store_.clear();
+        return;
+    }
     std::ifstream file(file_path_, std::ios::binary);
-    if (!file.is_open()) return;
+    if (!file.is_open()) {
+        throw std::runtime_error("Failed to open storage file.");
+    }
 
     unsigned char nonce[crypto_secretbox_NONCEBYTES];
     file.read(reinterpret_cast<char*>(nonce), sizeof nonce);

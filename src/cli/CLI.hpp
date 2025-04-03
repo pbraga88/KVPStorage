@@ -1,12 +1,18 @@
 #pragma once
 
 #include "commands/CommandProcessor.hpp"
+#include <istream>
+#include <ostream>
+#include <iostream>
 
 class CLI {
 public:
-    explicit CLI(CommandProcessor& processor);
-    void run();  // Inicia o loop de entrada interativa
+    CLI(CommandProcessor& processor, std::istream& in = std::cin, std::ostream& out = std::cout);
+
+    void run();
 
 private:
     CommandProcessor& processor_;
+    std::istream& in_;
+    std::ostream& out_;
 };
