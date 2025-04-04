@@ -1,0 +1,5 @@
+config BR2_PACKAGE_KVPSTORAGE
+    bool "kvpstorage"
+    select BR2_PACKAGE_LIBSODIUM
+    help
+      Encrypted key-value storage application (kvpstorage)

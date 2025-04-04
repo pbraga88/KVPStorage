@@ -73,14 +73,14 @@ TEST(CommandProcessorTest, DeleteNonExistentKey) {
     EXPECT_EQ(processor.handle_command("GET non_existent_key"), "");
 }
 
-// TEST(CommandProcessorTest, SetEmptyKey) {
-//     auto fake = std::make_unique<FakeStorage>();
-//     KVStorageFacade facade(std::move(fake));
-//     CommandProcessor processor(facade);
+TEST(CommandProcessorTest, SetEmptyKey) {
+    auto fake = std::make_unique<FakeStorage>();
+    KVStorageFacade facade(std::move(fake));
+    CommandProcessor processor(facade);
 
-//     EXPECT_EQ(processor.handle_command("SET  value"), "OK");
-//     EXPECT_EQ(processor.handle_command("GET "), "value");
-// }
+    EXPECT_EQ(processor.handle_command("SET  value"), "OK");
+    EXPECT_EQ(processor.handle_command("GET "), "value");
+}
 
 // TEST(CommandProcessorTest, SetEmptyValue) {
 //     auto fake = std::make_unique<FakeStorage>();
