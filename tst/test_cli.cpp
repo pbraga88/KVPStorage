@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
-#include "cli/CLI.hpp"
-#include "storage/KVStorageFacade.hpp"
+#include "CLI.hpp"
+#include "kvp/storage/KVStorageFacade.hpp"
 #include "FakeStorage.hpp"
 
 #include <sstream>

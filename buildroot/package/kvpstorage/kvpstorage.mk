@@ -25,7 +25,7 @@ define KVPSTORAGE_BUILD_CMDS
 endef
 
 define KVPSTORAGE_INSTALL_TARGET_CMDS
-	$(INSTALL) -D -m 0755 $(@D)/bin/kvpstorage_host $(TARGET_DIR)/usr/bin/kvpstorage
+	$(INSTALL) -D -m 0755 $(@D)/apps/cli/kvpstorage_cli $(TARGET_DIR)/usr/bin/kvpstorage
 	$(INSTALL) -D -m 0644 $(KVPSTORAGE_SITE)/keys/kvpstorage.key \
 	    $(TARGET_DIR)/etc/kvpstorage/keys/kvpstorage.key
 	$(INSTALL) -D -m 0644 $(KVPSTORAGE_SITE)/keys/kvpstorage.hmac \

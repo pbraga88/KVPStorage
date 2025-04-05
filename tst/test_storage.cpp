@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
-#include "storage/KVStorageFacade.hpp"
+#include "kvp/storage/KVStorageFacade.hpp"
 #include "FakeStorage.hpp"
 
 TEST(FacadeWithFakeTest, SetGetDelete) {

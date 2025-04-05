@@ -7,7 +7,7 @@
  */
 #pragma once
 
-#include "storage/IKVStorage.hpp"
+#include "kvp/storage/IKVStorage.hpp"
 #include <map>
 #include <optional>
 #include <string>

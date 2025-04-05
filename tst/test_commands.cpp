@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
-#include "storage/KVStorageFacade.hpp"
-#include "commands/CommandProcessor.hpp"
+#include "kvp/storage/KVStorageFacade.hpp"
+#include "kvp/commands/CommandProcessor.hpp"
 #include "FakeStorage.hpp"
 
 class CommandProcessorTest : public ::testing::Test {
