@@ -1,3 +1,10 @@
+/**
+ * @brief A fake storage class for testing purposes.
+ *
+ * This class implements the IKVStorage interface and provides a simple in-memory
+ * key-value store using a map. It is used for unit testing the KVStorageFacade
+ * and CommandProcessor classes.
+ */
 #pragma once
 
 #include "storage/IKVStorage.hpp"
@@ -5,7 +12,6 @@
 #include <optional>
 #include <string>
 
-// Implementação fake de IKVStorage (sem I/O, sem criptografia)
 class FakeStorage : public IKVStorage {
 public:
     void set(const std::string& key, const std::string& value) override {

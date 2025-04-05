@@ -3,99 +3,78 @@
 #include "commands/CommandProcessor.hpp"
 #include "FakeStorage.hpp"
 
-TEST(CommandProcessorTest, BasicSetGetDelete) {
-    auto fake = std::make_unique<FakeStorage>();
-    KVStorageFacade facade(std::move(fake));
-    CommandProcessor processor(facade);
+class CommandProcessorTest : public ::testing::Test {
+protected:
+    std::unique_ptr<FakeStorage> fake;
+    std::unique_ptr<KVStorageFacade> facade;
+    std::unique_ptr<CommandProcessor> processor;
 
-    // SET
-    std::string result = processor.handle_command("SET device TestDevice_001");
-    EXPECT_EQ(result, "OK");
+    void SetUp() override {
+        fake = std::make_unique<FakeStorage>();
+        facade = std::make_unique<KVStorageFacade>(std::move(fake));
+        processor = std::make_unique<CommandProcessor>(*facade);
+    }
+};
 
-    // GET
-    result = processor.handle_command("GET device");
-    EXPECT_EQ(result, "TestDevice_001");
+TEST_F(CommandProcessorTest, SetGetDeleteMultiple) {
+    EXPECT_EQ(processor->handle_command("SET language C++"), "OK");
+    EXPECT_EQ(processor->handle_command("SET version 20"), "OK");
+    EXPECT_EQ(processor->handle_command("SET library STL"), "OK");
 
-    // DELETE
-    result = processor.handle_command("DELETE device");
-    EXPECT_EQ(result, "OK");
+    EXPECT_EQ(processor->handle_command("GET language"), "C++");
+    EXPECT_EQ(processor->handle_command("GET version"), "20");
+    EXPECT_EQ(processor->handle_command("GET library"), "STL");
 
-    // GET novamente (espera retorno vazio)
-    result = processor.handle_command("GET device");
-    EXPECT_EQ(result, "");
+    EXPECT_EQ(processor->handle_command("DELETE language"), "OK");
+    EXPECT_EQ(processor->handle_command("GET language"), "");
 }
 
-TEST(CommandProcessorTest, InvalidCommands) {
-    auto fake = std::make_unique<FakeStorage>();
-    KVStorageFacade facade(std::move(fake));
-    CommandProcessor processor(facade);
-
-    EXPECT_EQ(processor.handle_command("SET onlykey"), "Comando inválido");
-    EXPECT_EQ(processor.handle_command("GET"), "Comando inválido");
-    EXPECT_EQ(processor.handle_command("DELETE"), "Comando inválido");
-    EXPECT_EQ(processor.handle_command("RANDOM cmd"), "Comando inválido");
+TEST_F(CommandProcessorTest, BasicSetGetDelete) {
+    EXPECT_EQ(processor->handle_command("SET device TestDevice_001"), "OK");
+    EXPECT_EQ(processor->handle_command("GET device"), "TestDevice_001");
+    EXPECT_EQ(processor->handle_command("DELETE device"), "OK");
+    EXPECT_EQ(processor->handle_command("GET device"), "");
 }
 
-TEST(CommandProcessorTest, SetGetDeleteMultiple) {
-    auto fake = std::make_unique<FakeStorage>();
-    KVStorageFacade facade(std::move(fake));
-    CommandProcessor processor(facade);
-
-    // SET
-    EXPECT_EQ(processor.handle_command("SET language C++"), "OK");
-    EXPECT_EQ(processor.handle_command("SET version 20"), "OK");
-    EXPECT_EQ(processor.handle_command("SET library STL"), "OK");
-
-    // GET
-    EXPECT_EQ(processor.handle_command("GET language"), "C++");
-    EXPECT_EQ(processor.handle_command("GET version"), "20");
-    EXPECT_EQ(processor.handle_command("GET library"), "STL");
-
-    // DELETE
-    EXPECT_EQ(processor.handle_command("DELETE language"), "OK");
-    EXPECT_EQ(processor.handle_command("GET language"), "");
+TEST_F(CommandProcessorTest, SetGetDeleteNonExistent) {
+    EXPECT_EQ(processor->handle_command("GET non_existent_key"), "");
+    EXPECT_EQ(processor->handle_command("DELETE non_existent_key"), "OK");
+    EXPECT_EQ(processor->handle_command("GET non_existent_key"), "");
 }
 
-TEST(CommandProcessorTest, GetNonExistentKey) {
-    auto fake = std::make_unique<FakeStorage>();
-    KVStorageFacade facade(std::move(fake));
-    CommandProcessor processor(facade);
-
-    EXPECT_EQ(processor.handle_command("GET non_existent_key"), "");
+TEST_F(CommandProcessorTest, SetGetDeleteEmptyKey) {
+    EXPECT_EQ(processor->handle_command("SET "), "Invalid Command");
+    EXPECT_EQ(processor->handle_command("GET "), "Invalid Command");
+    EXPECT_EQ(processor->handle_command("DELETE "), "Invalid Command");
 }
 
-TEST(CommandProcessorTest, DeleteNonExistentKey) {
-    auto fake = std::make_unique<FakeStorage>();
-    KVStorageFacade facade(std::move(fake));
-    CommandProcessor processor(facade);
-
-    EXPECT_EQ(processor.handle_command("DELETE non_existent_key"), "OK");
-    EXPECT_EQ(processor.handle_command("GET non_existent_key"), "");
+TEST_F(CommandProcessorTest, SetGetDeleteEmptyValue) {
+    EXPECT_EQ(processor->handle_command("SET empty_key "), "Invalid Command");
+    EXPECT_EQ(processor->handle_command("GET empty_key"), "");
+    EXPECT_EQ(processor->handle_command("DELETE empty_key"), "OK");
+    EXPECT_EQ(processor->handle_command("GET empty_key"), "");
 }
 
-TEST(CommandProcessorTest, SetEmptyKey) {
-    auto fake = std::make_unique<FakeStorage>();
-    KVStorageFacade facade(std::move(fake));
-    CommandProcessor processor(facade);
-
-    EXPECT_EQ(processor.handle_command("SET  value"), "OK");
-    EXPECT_EQ(processor.handle_command("GET "), "value");
+TEST_F(CommandProcessorTest, SetGetDeleteSpecialChars) {
+    EXPECT_EQ(processor->handle_command("SET special_key !@#$%^&*()"), "OK");
+    EXPECT_EQ(processor->handle_command("GET special_key"), "!@#$%^&*()");
+    EXPECT_EQ(processor->handle_command("DELETE special_key"), "OK");
+    EXPECT_EQ(processor->handle_command("GET special_key"), "");
 }
 
-// TEST(CommandProcessorTest, SetEmptyValue) {
-//     auto fake = std::make_unique<FakeStorage>();
-//     KVStorageFacade facade(std::move(fake));
-//     CommandProcessor processor(facade);
+TEST_F(CommandProcessorTest, SetGetDeleteLongKeyValue) {
+    std::string long_key(1000, 'a');
+    std::string long_value(1000, 'b');
 
-//     EXPECT_EQ(processor.handle_command("SET key "), "OK");
-//     EXPECT_EQ(processor.handle_command("GET key"), "");
-// }
+    EXPECT_EQ(processor->handle_command("SET " + long_key + " " + long_value), "OK");
+    EXPECT_EQ(processor->handle_command("GET " + long_key), long_value);
+    EXPECT_EQ(processor->handle_command("DELETE " + long_key), "OK");
+    EXPECT_EQ(processor->handle_command("GET " + long_key), "");
+}
 
-// TEST(CommandProcessorTest, SetKeyWithSpaces) {
-//     auto fake = std::make_unique<FakeStorage>();
-//     KVStorageFacade facade(std::move(fake));
-//     CommandProcessor processor(facade);
-
-//     EXPECT_EQ(processor.handle_command("SET key with spaces value"), "OK");
-//     EXPECT_EQ(processor.handle_command("GET key with spaces"), "value");
-// }
+TEST_F(CommandProcessorTest, SetGetDeleteWithSpaces) {
+    EXPECT_EQ(processor->handle_command("SET key with spaces value with spaces"), "Invalid Command");
+    EXPECT_EQ(processor->handle_command("GET key with spaces"), "Invalid Command");
+    EXPECT_EQ(processor->handle_command("DELETE key with spaces"), "Invalid Command");
+    EXPECT_EQ(processor->handle_command("GET key with spaces"), "Invalid Command");
+}

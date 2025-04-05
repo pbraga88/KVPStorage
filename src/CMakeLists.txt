@@ -9,7 +9,6 @@ target_link_libraries(kvpstorage sodium)
 add_executable(kvpstorage_host ../src/main.cpp)
 target_link_libraries(kvpstorage_host kvpstorage sodium)
 
-# Define onde colocar o binário final
 set_target_properties(kvpstorage_host PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
 )

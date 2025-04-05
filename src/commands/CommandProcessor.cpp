@@ -11,7 +11,7 @@ std::string CommandProcessor::handle_command(const std::string& input_line) {
 
     const std::string& cmd = tokens[0];
 
-    if (cmd == "SET" && tokens.size() >= 3) {
+    if (cmd == "SET" && tokens.size() == 3) {
         std::string key = tokens[1];
         std::string value = input_line.substr(input_line.find(key) + key.length() + 1);
         storage_.set(key, value);
@@ -26,7 +26,7 @@ std::string CommandProcessor::handle_command(const std::string& input_line) {
         return "OK";
     }
 
-    return "Comando inválido";
+    return "Invalid Command";
 }
 
 std::vector<std::string> CommandProcessor::tokenize(const std::string& input) {

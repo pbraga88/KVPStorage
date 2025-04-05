@@ -17,7 +17,7 @@ void generate_keys() {
 
 int main() {
     if (sodium_init() < 0) {
-        return 1; // panic! the library couldn't be initialized
+        return 1; // the library couldn't be initialized
     }
 
     generate_keys();

@@ -32,10 +32,8 @@ void FileKVStorage::del(const std::string& key) {
 
 void FileKVStorage::load_storage() {
     std::filesystem::create_directories(std::filesystem::path(file_path_).parent_path());
-    // std::ifstream file(file_path_, std::ios::binary);
 
     if (!std::filesystem::exists(file_path_)) {
-        // Arquivo ainda não existe: primeira execução.
         kv_store_.clear();
         return;
     }

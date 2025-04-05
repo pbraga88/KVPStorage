@@ -18,7 +18,7 @@ int main() {
 
         cli.run();
     } catch (const std::exception& e) {
-        std::cerr << "[ERRO] " << e.what() << "\n";
+        std::cerr << "[ERROR] " << e.what() << "\n";
         return 1;
     }
 

@@ -24,7 +24,6 @@ TEST(CliTest, SimpleSession) {
 
     std::string result = output.str();
 
-    // Verificações básicas
     EXPECT_NE(result.find("OK"), std::string::npos);
     EXPECT_NE(result.find("bar"), std::string::npos);
     EXPECT_NE(result.find("Bye!"), std::string::npos);
@@ -46,8 +45,7 @@ TEST(CliTest, InvalidCommand) {
 
     std::string result = output.str();
 
-    // Verificações básicas
-    EXPECT_NE(result.find("Comando inválido"), std::string::npos);
+    EXPECT_NE(result.find("Invalid Command"), std::string::npos);
 }
 
 TEST(CliTest, MultipleCommands) {
@@ -71,7 +69,6 @@ TEST(CliTest, MultipleCommands) {
 
     std::string result = output.str();
 
-    // Verificações básicas
     EXPECT_NE(result.find("OK"), std::string::npos);
     EXPECT_NE(result.find("value1"), std::string::npos);
     EXPECT_NE(result.find("value2"), std::string::npos);
@@ -94,7 +91,6 @@ TEST(CliTest, EmptyInput) {
 
     std::string result = output.str();
 
-    // Verificações básicas
     EXPECT_NE(result.find("Bye!"), std::string::npos);
 }
 
@@ -115,7 +111,6 @@ TEST(CliTest, SpecialCharacters) {
 
     std::string result = output.str();
 
-    // Verificações básicas
     EXPECT_NE(result.find("OK"), std::string::npos);
     EXPECT_NE(result.find("!@#$%^&*()"), std::string::npos);
 }
