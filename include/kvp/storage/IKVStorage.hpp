@@ -1,3 +1,11 @@
+
+/**
+ * @class IKVStorage
+ * @brief Interface for a key-value pair storage system.
+ *
+ * This interface defines the basic operations for a key-value storage system,
+ * including setting, retrieving, and deleting key-value pairs.
+ */
 #pragma once
 
 #include <optional>

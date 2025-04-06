@@ -30,6 +30,8 @@ define KVPSTORAGE_INSTALL_TARGET_CMDS
 	    $(TARGET_DIR)/etc/kvpstorage/keys/kvpstorage.key
 	$(INSTALL) -D -m 0644 $(KVPSTORAGE_SITE)/keys/kvpstorage.hmac \
 	    $(TARGET_DIR)/etc/kvpstorage/keys/kvpstorage.hmac
+    $(INSTALL) -D -m 0755 $(KVPSTORAGE_SITE)/scripts/init_kvpstorage.sh \
+        $(TARGET_DIR)/etc/kvpstorage/init_kvpstorage.sh
 endef
 
 $(eval $(generic-package))
