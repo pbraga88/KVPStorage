@@ -11,8 +11,8 @@ Requirements:
 
 Build Steps:
 ------------
-1. Run configuration:
-   ./scripts/configure.sh
+1. Run configuration with source:
+   source ./scripts/configure.sh
 
 3. Create build directory and compile:
    mkdir -p build && cd build
