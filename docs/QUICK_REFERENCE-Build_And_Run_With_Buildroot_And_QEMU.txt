@@ -24,18 +24,19 @@ Steps:
    make
 
 6. Run QEMU:
-   qemu-system-arm \
+qemu-system-arm \
    -M versatilepb \
    -kernel output/images/zImage \
    -dtb output/images/versatile-pb.dtb \
-   -drive file=output/images/rootfs.ext2,format=raw,if=sd \
-   -append "root=/dev/mmcblk0 console=ttyAMA0" \
+   -hda output/images/rootfs.ext2 \
+   -append "root=/dev/sda console=ttyAMA0" \
    -nographic
 
 Target Notes:
 -------------
 • Files installed in /usr/bin/kvpstorage
 • Keys installed in /etc/kvpstorage/keys
+• If prmpted, use 'root' password to login
 • Use an init script (init.sh) to export required env vars and start the app
    • # /etc/kvpstorage/init_kvpstorage.sh
 
