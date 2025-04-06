@@ -1,0 +1,47 @@
+Quick Reference – Building with Buildroot (QEMU ARM Target)
+===========================================================
+
+Requirements:
+-------------
+• Host Linux with required packages for Buildroot (make, gcc, etc.)
+
+Steps:
+------
+1. Clone Buildroot (if not done already):
+   git clone https://github.com/buildroot/buildroot.git
+
+2. Integrate kvpstorage package:
+   ./scripts/install_kvp_storage.sh /path/to/buildroot
+
+3. Enter Buildroot:
+   cd /path/to/buildroot
+
+4. Configure Buildroot:
+   make kvp_defconfig
+   make menuconfig   # Optional to check kvpstorage is enabled
+
+5. Build everything:
+   make
+
+6. Run QEMU:
+   qemu-system-arm \
+   -M versatilepb \
+   -kernel output/images/zImage \
+   -dtb output/images/versatile-pb.dtb \
+   -drive file=output/images/rootfs.ext2,format=raw,if=sd \
+   -append "root=/dev/mmcblk0 console=ttyAMA0" \
+   -nographic
+
+Target Notes:
+-------------
+• Files installed in /usr/bin/kvpstorage
+• Keys installed in /etc/kvpstorage/keys
+• Use an init script (init.sh) to export required env vars and start the app
+   • # /etc/kvpstorage/init_kvpstorage.sh
+
+init_kvpstorage.sh for reference:
+---------------------------------
+#!/bin/sh
+export KVP_STORAGE_PATH="/var/lib/kvpstorage/kvpstorage.secure"
+export KVP_KEYS_PATH="/etc/kvpstorage/keys"
+exec /usr/bin/kvpstorage

@@ -1,0 +1,36 @@
+Quick Reference – Building and Running on Desktop (Linux Host)
+==============================================================
+
+Requirements:
+-------------
+• OS: Ubuntu 22.04.5 LTS (or similar)
+• Dependencies:
+  - build-essential
+  - cmake
+  - libsodium-dev
+
+Environment Variables:
+-----------------------
+• KVP_STORAGE_PATH: path to the secure storage file.
+• KVP_KEYS_PATH: path to directory containing kvpstorage.key and kvpstorage.hmac
+
+Example:
+--------
+export KVP_STORAGE_PATH="$PWD/kvpstorage.secure"
+export KVP_KEYS_PATH="$PWD/keys"
+
+Build Steps:
+------------
+1. Run configuration:
+   ./scripts/configure.sh
+
+3. Create build directory and compile:
+   mkdir -p build && cd build
+   cmake ..
+   make
+
+4. Run unit tests:
+   ctest --output-on-failure
+
+5. Run the CLI:
+   ./apps/cli/kvpstorage_cli
