@@ -1,4 +1,3 @@
-
 /**
  * @brief Resolves the storage path for the KVP storage system.
  *

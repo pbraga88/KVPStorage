@@ -13,7 +13,6 @@
 #include <kvp/utils/KeyLoader.hpp>
 #include <nlohmann/json.hpp>
 
-
 #include <map>
 #include <optional>
 #include <string>
@@ -69,6 +68,27 @@ private:
     KeyLoader::Key hmac_key_;
     std::map<std::string, std::string> kv_store_;
 
+    /**
+     * @brief Loads the key-value pair storage from the underlying file system.
+     * 
+     * This function is responsible for initializing the storage by reading
+     * data from the associated file. It ensures that the storage is populated
+     * with the key-value pairs previously saved. If the file does not exist
+     * or is inaccessible, the function may handle the error or initialize
+     * an empty storage, depending on the implementation.
+     * 
+     * @throws std::runtime_error If there is an error accessing or reading the file.
+     */
     void load_storage();
+
+    /**
+     * @brief Saves the current key-value pair storage to the underlying file system.
+     * 
+     * This function is responsible for securely persisting the current state of the
+     * key-value storage to the associated file. It ensures that all key-value
+     * pairs are written to the file in a format that can be easily read back
+     * during future loads. If there is an error during the write process,
+     * appropriate error handling should be performed.
+     */
     void save_storage();
 };
