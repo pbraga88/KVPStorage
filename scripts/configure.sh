@@ -29,8 +29,9 @@ fi
 
 echo "All dependencies are installed."
 
-# Resolve root directory based on this script location
-ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# Resolve project root directory (one level up from this script)
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 # Environment variables for keys and storage
 export KVP_STORAGE_PATH="${ROOT_DIR}/kvpstorage.secure"
@@ -43,4 +44,4 @@ echo "  KVP_KEYS_PATH=$KVP_KEYS_PATH"
 
 echo ""
 echo "To apply these variables in your shell session, run:"
-echo "    source configure.sh"
+echo "    source script/configure.sh"

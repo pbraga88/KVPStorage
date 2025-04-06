@@ -9,16 +9,6 @@ Requirements:
   - cmake
   - libsodium-dev
 
-Environment Variables:
------------------------
-• KVP_STORAGE_PATH: path to the secure storage file.
-• KVP_KEYS_PATH: path to directory containing kvpstorage.key and kvpstorage.hmac
-
-Example:
---------
-export KVP_STORAGE_PATH="$PWD/kvpstorage.secure"
-export KVP_KEYS_PATH="$PWD/keys"
-
 Build Steps:
 ------------
 1. Run configuration:
@@ -34,3 +24,16 @@ Build Steps:
 
 5. Run the CLI:
    ./apps/cli/kvpstorage_cli
+
+Environment Variables:
+-----------------------
+• KVP_STORAGE_PATH: path to the secure storage file.
+• KVP_KEYS_PATH: path to directory containing kvpstorage.key and kvpstorage.hmac
+
+The environment variables will be set by the configure.sh script, but one can
+change it by following the example below
+
+Example:
+--------
+export KVP_STORAGE_PATH="$PWD/kvpstorage.secure"
+export KVP_KEYS_PATH="$PWD/keys"
